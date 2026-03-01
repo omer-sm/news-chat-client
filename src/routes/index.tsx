@@ -166,11 +166,11 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'Welcome to Qwik',
+  title: "צ'אט הכתבים",
   meta: [
     {
-      name: 'description',
-      content: 'Qwik site description',
+      name: "צ'אט הכתבים",
+      content: 'N12 news chat client',
     },
   ],
 };
