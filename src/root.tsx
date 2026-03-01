@@ -1,8 +1,8 @@
-import { component$, isDev } from "@builder.io/qwik";
-import { QwikCityProvider, RouterOutlet } from "@builder.io/qwik-city";
-import { RouterHead } from "./components/router-head/router-head";
+import { component$, isDev, useVisibleTask$ } from '@builder.io/qwik';
+import { QwikCityProvider, RouterOutlet } from '@builder.io/qwik-city';
+import { RouterHead } from './components/router-head/router-head';
 
-import "./global.css";
+import './global.css';
 
 export default component$(() => {
   /**
@@ -17,14 +17,11 @@ export default component$(() => {
       <head>
         <meta charset="utf-8" />
         {!isDev && (
-          <link
-            rel="manifest"
-            href={`${import.meta.env.BASE_URL}manifest.json`}
-          />
+          <link rel="manifest" href={`${import.meta.env.BASE_URL}manifest.json`} />
         )}
         <RouterHead />
       </head>
-      <body lang="en">
+      <body dir="rtl">
         <RouterOutlet />
       </body>
     </QwikCityProvider>
