@@ -26,16 +26,38 @@ export default component$(() => {
     message: null,
   });
   const { messages, areMessagesLoaded } = useContext(NewsChatWebsocketContext);
+  const isAtBottom = useSignal(false);
+  const bottomRef = useSignal<Element>();
+
+  useVisibleTask$(({ cleanup, track }) => {
+    const observer = new IntersectionObserver(([entry]) => {
+      isAtBottom.value = entry.isIntersecting;
+    });
+
+    if (track(bottomRef) && bottomRef.value) {
+      observer.observe(bottomRef.value);
+    }
+    cleanup(() => observer.disconnect());
+  });
 
   useVisibleTask$(({ track }) => {
-    if (track(shouldScrollDown) && track(messages).length > 0) {
+    if (
+      (track(shouldScrollDown) || track(isAtBottom)) &&
+      track(messages).length > 0
+    ) {
       shouldScrollDown.value = false;
       const messagesContainer = document.getElementById('messages-container');
 
       if (messagesContainer) {
-        setTimeout(() => {
-          messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }, 500);
+        if (isAtBottom.value) {
+          setTimeout(() => {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }, 200);
+        } else {
+          setTimeout(() => {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }, 500);
+        }
       }
     }
   });
@@ -61,6 +83,7 @@ export default component$(() => {
             key={message.id}
           />
         ))}
+        {messages.value.length > 0 && <div class="h-px" ref={bottomRef}></div>}
         {messages.value.length === 0 && areMessagesLoaded.value && (
           <div class="text-3xl w-full text-center opacity-70 my-auto">
             <IconInbox class="w-full h-50" />

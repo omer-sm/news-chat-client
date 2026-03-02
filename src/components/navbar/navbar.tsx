@@ -6,7 +6,10 @@ export const Navbar = component$(() => {
 
   return (
     <nav class="navbar bg-base-300 shadow-sm shrink-0 flex justify-between">
-      <h1 class="text-3xl font-semibold">💬 צ'אט הכתבים</h1>
+      <div class="flex items-center gap-2">
+        <img src="/news-chat-client/favicon.svg" class="h-8" />
+        <h1 class="text-3xl font-semibold">צ'אט הכתבים</h1>
+      </div>
 
       <div class="inline-grid *:[grid-area:1/1] mx-4">
         {isWsConnected.value ? (

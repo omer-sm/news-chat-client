@@ -7,6 +7,5 @@ export interface NewsChatWebsocketContextType {
   areMessagesLoaded: Signal<boolean>;
 }
 
-export const NewsChatWebsocketContext = createContextId<NewsChatWebsocketContextType>(
-  'newsChatWebsocket.context',
-);
+export const NewsChatWebsocketContext =
+  createContextId<NewsChatWebsocketContextType>('newsChatWebsocket.context');
