@@ -68,6 +68,13 @@ export default component$(() => {
             <p class="text-lg opacity-50">יום שקט... מדי?</p>
           </div>
         )}
+        {messages.value.length === 0 && !areMessagesLoaded.value && (
+          <div class="text-3xl w-full text-center opacity-70 my-auto">
+            <span class="loading loading-dots loading-xl"></span>
+            <p>מתחברים..</p>
+            <p class="text-lg opacity-50">אנחנו כבר שם!</p>
+          </div>
+        )}
       </div>
     </div>
   );
