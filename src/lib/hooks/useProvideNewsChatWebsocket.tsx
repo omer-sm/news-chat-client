@@ -11,7 +11,7 @@ import type {
   NewsMessage,
 } from '../messages/messages.types';
 
-export const useProvideNewsChatWebsocket = (startTimestamp: number) => {
+export const useProvideNewsChatWebsocket = (historyStartDiff: number) => {
   const messages = useSignal<MessageContent[]>([]);
   const areMessagesLoaded = useSignal(false);
   const isWsConnected = useSignal(false);
@@ -27,7 +27,7 @@ export const useProvideNewsChatWebsocket = (startTimestamp: number) => {
       ws.onopen = (_event) => {
         isWsConnected.value = true;
         ws.send(
-          `{"t":"d","d":{"r":2,"a":"q","b":{"p":"/desk12","q":{"sp":${startTimestamp},"i":"updatedDate/time"},"t":1,"h":""}}}`,
+          `{"t":"d","d":{"r":2,"a":"q","b":{"p":"/desk12","q":{"sp":${Date.now() - historyStartDiff},"i":"updatedDate/time"},"t":1,"h":""}}}`,
         );
       };
 
