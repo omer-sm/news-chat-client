@@ -1,8 +1,8 @@
-import { component$, Signal } from '@builder.io/qwik';
-import { MessageContent } from '~/lib/messages/messages.types';
+import { type Signal, component$ } from '@builder.io/qwik';
+import type { MessageContent } from '~/lib/messages/messages.types';
 import { zpad } from '~/lib/utils';
-import { MediaModalProps } from '../media-modal/media-modal';
 import { IconVideo } from '../icons/icon-video';
+import type { MediaModalProps } from '../media-modal/media-modal';
 
 interface MessageProps {
   message: MessageContent;
@@ -31,10 +31,14 @@ export const Message = component$<MessageProps>(
           </div>
           <div class="flex gap-1 items-center">
             {message.important && (
-              <p class="badge badge-sm badge-error badge-soft opacity-80">חשוב!</p>
+              <p class="badge badge-sm badge-error badge-soft opacity-80">
+                חשוב!
+              </p>
             )}
             {message.current && (
-              <p class="badge badge-sm badge-success badge-soft opacity-80">עכשיו!</p>
+              <p class="badge badge-sm badge-success badge-soft opacity-80">
+                עכשיו!
+              </p>
             )}
 
             <p class="text-info/50 badge border-0 opacity-80">

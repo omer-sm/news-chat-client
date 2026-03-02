@@ -6,11 +6,14 @@ import {
   useVisibleTask$,
 } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { match, Pattern } from 'ts-pattern';
+import { Pattern, match } from 'ts-pattern';
 import { IconInbox } from '~/components/icons/icon-inbox';
-import { MediaModal, MediaModalProps } from '~/components/media-modal/media-modal';
-import { Message } from '~/components/message/message';
 import {
+  MediaModal,
+  type MediaModalProps,
+} from '~/components/media-modal/media-modal';
+import { Message } from '~/components/message/message';
+import type {
   HistoryMessage,
   MessageContent,
   NewsMessage,
@@ -76,7 +79,8 @@ export default component$(() => {
                 ...messages.value,
                 ...Object.values((message as HistoryMessage).d.b.d)
                   .filter(
-                    (messageContent) => messageContent.reporter.reporter.topicID === 1,
+                    (messageContent) =>
+                      messageContent.reporter.reporter.topicID === 1,
                   )
                   .sort((a, b) => a.updatedDate.time - b.updatedDate.time),
               ];
@@ -100,7 +104,10 @@ export default component$(() => {
               },
             },
             (message: any) => {
-              messages.value = [...messages.value, message.d.b.d as MessageContent];
+              messages.value = [
+                ...messages.value,
+                message.d.b.d as MessageContent,
+              ];
             },
           )
           .otherwise(() => {
@@ -151,7 +158,10 @@ export default component$(() => {
         class="mx-2 lg:mx-[35%] flex flex-col gap-2 p-4 h-full overflow-y-auto scroll-smooth"
       >
         {messages.value.map((message) => (
-          <Message {...{ mediaProperties, message, isMediaModalOpen }} />
+          <Message
+            {...{ mediaProperties, message, isMediaModalOpen }}
+            key={message.id}
+          />
         ))}
         {messages.value.length === 0 && areMessagesLoaded.value && (
           <div class="text-3xl w-full text-center opacity-70 my-auto">

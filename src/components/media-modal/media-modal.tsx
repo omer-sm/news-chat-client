@@ -1,4 +1,4 @@
-import { component$, Signal, useVisibleTask$ } from '@builder.io/qwik';
+import { type Signal, component$, useVisibleTask$ } from '@builder.io/qwik';
 
 export interface MediaModalProps {
   mediaUrl: string | null;
@@ -21,7 +21,10 @@ export const MediaModal = component$<MediaModalProps>(
 
     return (
       <dialog id="media-dialog" class="modal" open={isOpen.value}>
-        <div class="modal-box pt-10 px-4" style={{ width: 'calc(11.5 / 12 * 100%)' }}>
+        <div
+          class="modal-box pt-10 px-4"
+          style={{ width: 'calc(11.5 / 12 * 100%)' }}
+        >
           <form method="dialog">
             <button
               class="btn btn-sm btn-circle btn-ghost absolute right-1 top-1"
@@ -33,7 +36,9 @@ export const MediaModal = component$<MediaModalProps>(
               ✕
             </button>
           </form>
-          {mediaType === 'Image' && <img src={mediaUrl ?? ''} class="w-full rounded" />}
+          {mediaType === 'Image' && (
+            <img src={mediaUrl ?? ''} class="w-full rounded" />
+          )}
           {mediaType === 'Video' && (
             <video
               id="modal-video"
