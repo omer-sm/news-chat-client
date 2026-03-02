@@ -1,4 +1,5 @@
 import {
+  $,
   component$,
   useContext,
   useSignal,
@@ -7,6 +8,7 @@ import {
   useVisibleTask$,
 } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+import { IconArrowDown } from '~/components/icons/icon-arrow-down';
 import { IconInbox } from '~/components/icons/icon-inbox';
 import {
   MediaModal,
@@ -28,6 +30,7 @@ export default component$(() => {
   const { messages, areMessagesLoaded } = useContext(NewsChatWebsocketContext);
   const isAtBottom = useSignal(false);
   const bottomRef = useSignal<Element>();
+  const readMessagesAmount = useSignal(0);
 
   useVisibleTask$(({ cleanup, track }) => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -40,25 +43,29 @@ export default component$(() => {
     cleanup(() => observer.disconnect());
   });
 
+  const scrollDown = $((delay: number = 0) => {
+    const messagesContainer = document.getElementById('messages-container');
+
+    if (messagesContainer) {
+      readMessagesAmount.value = messages.value.length;
+
+      if (delay > 0) {
+        setTimeout(() => {
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }, delay);
+      } else {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }
+  });
+
   useVisibleTask$(({ track }) => {
     if (
       (track(shouldScrollDown) || track(isAtBottom)) &&
       track(messages).length > 0
     ) {
       shouldScrollDown.value = false;
-      const messagesContainer = document.getElementById('messages-container');
-
-      if (messagesContainer) {
-        if (isAtBottom.value) {
-          setTimeout(() => {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-          }, 200);
-        } else {
-          setTimeout(() => {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-          }, 500);
-        }
-      }
+      scrollDown(isAtBottom.value ? 200 : 500);
     }
   });
 
@@ -71,7 +78,7 @@ export default component$(() => {
   });
 
   return (
-    <div class="flex-1 overflow-y-auto">
+    <div class="flex-1 overflow-y-auto relative">
       <MediaModal isOpen={isMediaModalOpen} {...mediaProperties} />
       <div
         id="messages-container"
@@ -97,6 +104,17 @@ export default component$(() => {
             <p>מתחברים..</p>
             <p class="text-lg opacity-50">אנחנו כבר שם!</p>
           </div>
+        )}
+        {messages.value.length > readMessagesAmount.value && (
+          <button
+            class="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-sm btn btn-outline btn-info btn-sm bg-base-100 flex items-center shadow-[0_0_1px_var(--color-info),0_0_2px_var(--color-info),0_0_6px_var(--color-info)]"
+            onClick$={() => {
+              scrollDown();
+            }}
+          >
+            הודעות חדשות
+            <IconArrowDown class="w-4 h-4" />
+          </button>
         )}
       </div>
     </div>
